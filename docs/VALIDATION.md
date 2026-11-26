@@ -23,3 +23,9 @@ CI matrix Node22/24 dan Ubuntu/Windows disediakan; hasil lokal tidak sama dengan
 Slide setup → README dan import bundle; Lab1 → material-request/docs/PRD.md dan ARCHITECTURE.md; Lab2 → TRD.md, ADR0001 dan src/requests; implementasi kuota → quota.test.js; Lab3 → material-transfer/docs/superpowers, transitions.test.js dan scripts/demo.mjs.
 
 Semua prompt, code panel, dan output slide ditandai sebagai contoh atau hasil test lokal. Jumlah token, skill, biaya plugin, serta klaim reviewer AI tidak dipresentasikan sebagai hasil aktual.
+
+## Verifikasi dari GitHub
+
+Repo publik: https://github.com/tdarmawan/sesi-10-ai-assisted-sdlc-labs. Clone baru berhasil; 44 berkas cocok dengan paket publikasi. Enam tag latihan berhasil diimpor dari checkpoints.bundle. Dari clone tersebut: npm ci, 26 test, lint:arch, dan demo HTTP lulus. npm run dev pada kedua folder berhasil melayani port 3000/3001; UI request merespons 200, overflow kuota 422, dan lifecycle transfer mengembalikan stock ke 100.
+
+GitHub Actions menjalankan matrix Ubuntu/Windows dengan Node 22/24. Pemeriksaan tambahan mencakup bundle, baseline test yang tidak berubah, dan demo. Status terkini: [Lab verification](https://github.com/tdarmawan/sesi-10-ai-assisted-sdlc-labs/actions/workflows/ci.yml).
