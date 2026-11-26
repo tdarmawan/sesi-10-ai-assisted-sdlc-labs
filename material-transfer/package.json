@@ -1,0 +1,8 @@
+{
+  "name": "material-transfer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {"dev":"node src/server.js","test":"node --test","demo":"node scripts/demo.mjs","lint:arch":"node ../scripts/check-architecture.mjs"}
+}
