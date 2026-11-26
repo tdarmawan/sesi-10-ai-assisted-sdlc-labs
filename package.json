@@ -1,0 +1,12 @@
+{
+  "name": "sesi-10-ai-assisted-sdlc-labs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "npm test --prefix material-request && npm test --prefix material-transfer",
+    "lint:arch": "node scripts/check-architecture.mjs",
+    "demo": "npm run demo --prefix material-transfer"
+  }
+}
