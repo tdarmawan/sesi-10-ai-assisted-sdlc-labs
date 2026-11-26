@@ -11,10 +11,15 @@ jobs:
         node: [22, 24]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
       - run: npm ci
       - run: npm test
       - run: npm run lint:arch
+      - run: git bundle verify checkpoints.bundle
+      - run: git fetch ./checkpoints.bundle 'refs/tags/*:refs/tags/*'
+      - run: git diff --exit-code material-request-start lab2-checkpoint -- material-request/test/baseline.test.js
+      - run: git diff --exit-code material-transfer-start material-transfer-solution -- material-transfer/test/baseline.test.js
+      - run: npm run demo
