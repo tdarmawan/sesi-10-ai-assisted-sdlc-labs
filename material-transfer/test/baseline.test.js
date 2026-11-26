@@ -1,0 +1,10 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createApp } from '../src/app.js';
+import { createTransferService } from '../src/service.js';
+test('create NEW transfer without changing stock',()=>{const s=createTransferService();assert.equal(s.create({id:'T1',part:'FLT-01',qty:5}).status,'NEW');assert.equal(s.stock(),100)});
+test('confirm decreases stock once and is idempotent',()=>{const s=createTransferService();s.create({id:'T1',part:'FLT-01',qty:5});s.confirm('T1',{actor:'Rina'});s.confirm('T1',{actor:'Rina'});assert.equal(s.stock(),95)});
+test('duplicate IDs return 409 and do not replace original',()=>{const s=createTransferService();s.create({id:'T1',part:'FLT-01',qty:5});assert.throws(()=>s.create({id:'T1',part:'OTHER',qty:99}),{status:409});assert.equal(s.get('T1').qty,5)});
+test('insufficient stock is atomic',()=>{const s=createTransferService();s.create({id:'T1',part:'FLT-01',qty:101});assert.throws(()=>s.confirm('T1',{actor:'Rina'}),{status:409});assert.equal(s.stock(),100);assert.equal(s.get('T1').status,'NEW')});
+test('invalid input and missing ID have stable errors',()=>{const s=createTransferService();assert.throws(()=>s.create({id:'',part:'x',qty:0}),{status:400});assert.throws(()=>s.get('missing'),{status:404})});
+test('API create and confirm use expected status codes',async()=>{const app=createApp();assert.equal((await app({method:'POST',url:'/api/transfers',body:{id:'T1',part:'FLT-01',qty:5}})).status,201);assert.equal((await app({method:'POST',url:'/api/transfers/T1/confirm',body:{actor:'Rina'}})).body.status,'CONFIRMED');assert.equal((await app({method:'GET',url:'/api/stock'})).body.warehouse,95)});
